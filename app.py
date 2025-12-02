@@ -1,7 +1,7 @@
 #IMPORTS
 from flask import Flask, render_template, session, abort, redirect, url_for, request, flash, jsonify, send_from_directory
 import datetime
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 # import MySQLdb.cursors
 import sqlite3
 # from flask_mysqldb import MySQL
@@ -194,7 +194,7 @@ def logout():
 def dashboard():
     connection = sqlite3.connect("schooldata.db")
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM Teachers WHERE Email=?", (session['user'],))
+    cursor.execute("SELECT * FROM Teachers WHERE Email=?", (session['user'],))                                                                                                      
     teacher = cursor.fetchall()
     if 'user' in session:
         for t in teacher:
@@ -222,8 +222,8 @@ def profile():
             surname = t[2]
             gender = t[3]
             email = t[4]
-            subjectid = t[5]
-        cursor.execute("SELECT * FROM Subjects WHERE SubjectID=?", (subjectid,))
+            subjectid = t[6]
+        cursor.execute("SELECT * FROM Subjects WHERE SubjectID=?", (int(subjectid),))
         subjects = cursor.fetchall()
         for s in subjects:
             subjectname = s[1]
@@ -250,38 +250,16 @@ def students():
     if 'user' in session:
         for t in teacher:
             role = t[5]
-        
-        # Get search query from GET parameter
-        query = request.args.get('query', '').strip()
-        
-        if role == "A":
-            if query:
-                # Search by ID, first name, surname, email, or mastery
-                search_param = f"%{query}%"
-                cursor.execute("""SELECT * FROM Students WHERE 
-                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
-                               OR Email LIKE ? OR Mastery LIKE ?""", 
-                               (search_param, search_param, search_param, search_param, search_param))
-            else:
-                cursor.execute("SELECT * FROM Students")
+
+        query = request.args.get('query')
+        if query:
+            cursor.execute("SELECT * FROM Students WHERE Firstname LIKE ? OR Surname LIKE ? OR Yeargroup LIKE ?", (f'%{query}%', f'%{query}%', f'%{query}%'))
             students = cursor.fetchall()
-            cursor.execute("SELECT * FROM Student_info")
-            extra_info = cursor.fetchall()
-            return render_template("admin_students.html", students=students, info=extra_info, query=query) 
         else:
-            if query:
-                # Non-admin teachers see all students but can search
-                search_param = f"%{query}%"
-                cursor.execute("""SELECT * FROM Students WHERE 
-                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
-                               OR Email LIKE ? OR Mastery LIKE ?""", 
-                               (search_param, search_param, search_param, search_param, search_param))
-            else:
-                cursor.execute("SELECT * FROM Students")
+            cursor.execute("SELECT * FROM Students")
             students = cursor.fetchall()
-            cursor.execute("SELECT * FROM Student_Info")
-            extra_info = cursor.fetchall()
-            return render_template("students.html", students=students, info=extra_info, query=query)
+        
+        return render_template("base_student.html", students=students, role=role)
     else:
         return redirect(url_for('login'))
     
@@ -487,13 +465,6 @@ def history_messages():
 
 
 
-
-
-
-
-
-
-
 @app.route('/view_post/<int:post_id>') # View Post route
 def view_post(post_id):
     if 'user' in session:
@@ -508,8 +479,6 @@ def view_post(post_id):
     else:
         return redirect(url_for('login'))
     
-
-
 
 
 @app.route('/new_post', methods=['GET', 'POST']) # Add Post route
@@ -542,33 +511,216 @@ def new_post():
         return redirect(url_for('login'))
 
 
+
+@app.route('/maths_new_post', methods=['GET', 'POST']) # Add Post route
+def maths__new_post():
+    if 'user' in session:
+        if request.method == 'POST':
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+            teacher = cursor.fetchone()
+            teacherid = teacher[0]
+            title = request.form.get('title')
+            content = request.form.get('content')
+            date = datetime.date.today()
+            time = datetime.datetime.now().time()
+            time = time.strftime("%H:%M")
+            attachments = request.form.get('attachments')
+        
+
+            
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO M_Posts (Title, Content, Date, Time, Attachments, TeacherID) VALUES (?, ?, ?, ?, ?, ?)", 
+                           (title, content, date, time, attachments, teacherid))
+            connection.commit()
+            connection.close()
+            return redirect(url_for('messages'))
+        return render_template("maths_new_post.html")
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/english_new_post', methods=['GET', 'POST']) # Add Post route
+def english__new_post():
+    if 'user' in session:
+        if request.method == 'POST':
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+            teacher = cursor.fetchone()
+            teacherid = teacher[0]
+            title = request.form.get('title')
+            content = request.form.get('content')
+            date = datetime.date.today()
+            time = datetime.datetime.now().time()
+            time = time.strftime("%H:%M")
+            attachments = request.form.get('attachments')
+        
+
+            
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO E_Posts (Title, Content, Date, Time, Attachments, TeacherID) VALUES (?, ?, ?, ?, ?, ?)", 
+                           (title, content, date, time, attachments, teacherid))
+            connection.commit()
+            connection.close()
+            return redirect(url_for('messages'))
+        return render_template("english_new_post.html")
+    else:
+        return redirect(url_for('login'))
+
+
+
+@app.route('/science_new_post', methods=['GET', 'POST']) # Add Post route
+def science__new_post():
+    if 'user' in session:
+        if request.method == 'POST':
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+            teacher = cursor.fetchone()
+            teacherid = teacher[0]
+            title = request.form.get('title')
+            content = request.form.get('content')
+            date = datetime.date.today()
+            time = datetime.datetime.now().time()
+            time = time.strftime("%H:%M")
+            attachments = request.form.get('attachments')
+        
+
+            
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO S_Posts (Title, Content, Date, Time, Attachments, TeacherID) VALUES (?, ?, ?, ?, ?, ?)", 
+                           (title, content, date, time, attachments, teacherid))
+            connection.commit()
+            connection.close()
+            return redirect(url_for('messages'))
+        return render_template("science_new_post.html")
+    else:
+        return redirect(url_for('login'))
+
+
+
+@app.route('/computing_new_post', methods=['GET', 'POST']) # Add Post route
+def computing__new_post():
+    if 'user' in session:
+        if request.method == 'POST':
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+            teacher = cursor.fetchone()
+            teacherid = teacher[0]
+            title = request.form.get('title')
+            content = request.form.get('content')
+            date = datetime.date.today()
+            time = datetime.datetime.now().time()
+            time = time.strftime("%H:%M")
+            attachments = request.form.get('attachments')
+        
+
+            
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO C_Posts (Title, Content, Date, Time, Attachments, TeacherID) VALUES (?, ?, ?, ?, ?, ?)", 
+                           (title, content, date, time, attachments, teacherid))
+            connection.commit()
+            connection.close()
+            return redirect(url_for('messages'))
+        return render_template("computing_new_post.html")
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+@app.route('/history_new_post', methods=['GET', 'POST']) # Add Post route
+def history__new_post():
+    if 'user' in session:
+        if request.method == 'POST':
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+            teacher = cursor.fetchone()
+            teacherid = teacher[0]
+            title = request.form.get('title')
+            content = request.form.get('content')
+            date = datetime.date.today()
+            time = datetime.datetime.now().time()
+            time = time.strftime("%H:%M")
+            attachments = request.form.get('attachments')
+        
+
+            
+            connection = sqlite3.connect("schooldata.db")
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO H_Posts (Title, Content, Date, Time, Attachments, TeacherID) VALUES (?, ?, ?, ?, ?, ?)", 
+                           (title, content, date, time, attachments, teacherid))
+            connection.commit()
+            connection.close()
+            return redirect(url_for('messages'))
+        return render_template("history_new_post.html")
+    else:
+        return redirect(url_for('login'))
+
+
+
+
 @app.route('/delete_post', methods=['GET', 'POST']) # Delete Post route
 def delete_post():
     if 'user' in session:
         connection = sqlite3.connect("schooldata.db")
         cursor = connection.cursor()
+        teachers = cursor.execute("SELECT * FROM Teachers").fetchall()
         teacherid = cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],)).fetchone()[0]
-        cursor.execute("SELECT * FROM Posts WHERE TeacherID=?", (teacherid,))
-        myposts = cursor.fetchall()
-        myposts = myposts[::-1]
-
-
-        if request.method == 'POST':
-            post_id = request.form.get('post_id')
-            cursor.execute("DELETE FROM Posts WHERE PostID=? AND TeacherID=?", (post_id,teacherid))
-            connection.commit()
-            connection.close()
-            return redirect(url_for('messages'))
+        subjectid = cursor.execute("SELECT SubjectID FROM Teachers WHERE Email=?", (session['user'],)).fetchone()[0]
+        
+        if subjectid == 1:
+            cursor.execute("SELECT * FROM Posts ")
+            myposts = cursor.fetchall()
+            myposts = myposts[::-1]
+            if request.method == 'POST':
+                post_id = request.form.get('post_id')
+                cursor.execute("DELETE FROM Posts WHERE PostID=?", (post_id,))
+                connection.commit()
+                connection.close()
+                return redirect(url_for('messages'))               
+        else:
+            cursor.execute("SELECT * FROM Posts WHERE TeacherID=?", (teacherid,))
+            myposts = cursor.fetchall()
+            myposts = myposts[::-1]
+            if request.method == 'POST':
+                post_id = request.form.get('post_id')
+                cursor.execute("DELETE FROM Posts WHERE PostID=? AND TeacherID=?", (post_id,teacherid))
+                connection.commit()
+                connection.close()
+                return redirect(url_for('messages'))
     else:
         return redirect(url_for('login'))
         
-    return render_template("delete_post.html", myposts=myposts)
+    return render_template("delete_post.html", myposts=myposts, teachers=teachers)
+
+
+
+@app.route('/analysis') # Analysis route
+def analysis():
+    if 'user' in session:
+        return render_template("analysis.html")
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
+
 
 
 
 if __name__ == "__main__": # Run the app
     app.run(debug=True)
-
 
 
 

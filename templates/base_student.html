@@ -17,12 +17,16 @@
         <form method="GET" action="{{ url_for('students') }}">
             <input type="text" name="query" placeholder="Search students..." size="50" value="{{ query or '' }}">
             <button type="submit"><i class="fa fa-search"></i></button><br><br>
-            {% if query %}<a href="{{ url_for('students') }}" style="margin-left: 10px;">Clear</a><br><br>{% endif %}
+            {% if query %}
+                <a href="{{ url_for('students') }}">Clear</a><br><br>
+            {% endif %}
         </form>
     </div>
+
     {% if query %}
-    <p style="color: #666; margin: 10px 0;">Search results for: <strong>{{ query }}</strong> ({{ students|length }} found)</p>
+        <p>Search results for: <strong>{{ query }}</strong> ({{ students|length }} found)</p>
     {% endif %}
+    
     <div class="container">
         <table>
             <tr>

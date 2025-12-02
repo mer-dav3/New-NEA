@@ -7,3 +7,48 @@ cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('English')")
 cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('Science')")
 cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('Computing')")
 cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('History')")
+
+
+
+
+
+
+
+        query = request.args.get('query', '').strip()
+        
+        if role == "A":
+            if query:
+                search_param = f"%{query}%"
+                cursor.execute("""SELECT * FROM Students WHERE 
+                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
+                               OR Email LIKE ? OR Mastery LIKE ?""", 
+                               (search_param, search_param, search_param, search_param, search_param))
+            else:
+                cursor.execute("SELECT * FROM Students")
+            students = cursor.fetchall()
+            cursor.execute("SELECT * FROM Student_info")
+            extra_info = cursor.fetchall()
+            return render_template("admin_students.html", students=students, info=extra_info, query=query) 
+        else:
+            if query:
+                search_param = f"%{query}%"
+                cursor.execute("""SELECT * FROM Students WHERE 
+                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
+                               OR Email LIKE ? OR Mastery LIKE ?""", 
+                               (search_param, search_param, search_param, search_param, search_param))
+            else:
+                cursor.execute("SELECT * FROM Students")
+            students = cursor.fetchall()
+            cursor.execute("SELECT * FROM Student_Info")
+            extra_info = cursor.fetchall()
+            return render_template("students.html", students=students, info=extra_info, query=query)
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
+
+
+
