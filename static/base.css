@@ -99,6 +99,88 @@ header h2{
     font-size: 16px;
 }
 
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+    header a {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+    
+    header a.normal {
+        padding: 16px 20px;
+    }
+    
+    .navbar-profile {
+        padding: 0px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 50px;
+    }
+    
+    header {
+        height: var(--header-height);
+    }
+    
+    header a {
+        padding: 8px 10px;
+        font-size: 16px;
+    }
+    
+    header a.normal {
+        padding: 12px 15px;
+    }
+    
+    header h2 {
+        font-size: 14px;
+    }
+    
+    .navbar-profile .info h2 {
+        font-size: 14px;
+    }
+    
+    .navbar-profile img {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --header-height: 45px;
+    }
+    
+    header {
+        height: var(--header-height);
+    }
+    
+    header a {
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+    
+    header a.normal {
+        padding: 10px 12px;
+    }
+    
+    header h2 {
+        display: none;
+    }
+    
+    .navbar-profile .info {
+        display: none;
+    }
+    
+    .navbar-profile img {
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
+    }
+}
+
 .navbar-profile .info h3 {
     margin: 0;
     font-size: 12px;

@@ -1,3 +1,24 @@
 h1 {
   font-size: 30px;
 }
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+}

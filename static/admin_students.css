@@ -99,6 +99,136 @@ nav a{
   color: #030000;
 }
 
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  tr th {
+    padding: 8px 4px 8px 4px;
+    font-size: 15px;
+  }
+  
+  td {
+    padding: 8px 0 0 0;
+    font-size: 14px;
+  }
+  
+  .search-bar input[type=text] {
+    font-size: 20px;
+    padding: 5px;
+  }
+  
+  .search-bar button {
+    font-size: 16px;
+    padding: 9px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+  }
+  
+  tr th {
+    padding: 6px 3px 6px 3px;
+    font-size: 13px;
+  }
+  
+  table, th, td {
+    font-size: 12px;
+  }
+  
+  td {
+    padding: 6px 0 0 0;
+  }
+  
+  .search-bar {
+    flex-direction: column;
+    margin-top: 60px;
+  }
+  
+  .search-bar input[type=text] {
+    width: 85%;
+    font-size: 16px;
+    padding: 6px;
+    margin: 0 auto 8px auto;
+  }
+  
+  .search-bar button {
+    width: 85%;
+    font-size: 14px;
+    padding: 8px 6px;
+    margin: 0 auto;
+    float: none;
+  }
+  
+  .search-bar a {
+    margin-top: 10px;
+  }
+  
+  .back a {
+    font-size: 100%;
+    padding: 10px 15px;
+  }
+  
+  nav a {
+    font-size: 100%;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  tr th {
+    padding: 5px 2px 5px 2px;
+    font-size: 11px;
+  }
+  
+  table, th, td {
+    font-size: 10px;
+  }
+  
+  td {
+    padding: 5px 0 0 0;
+  }
+  
+  .search-bar {
+    flex-direction: column;
+    margin-top: 50px;
+    width: 100%;
+  }
+  
+  .search-bar input[type=text] {
+    width: 90%;
+    font-size: 14px;
+    padding: 5px;
+    margin: 0 auto 6px auto;
+  }
+  
+  .search-bar button {
+    width: 90%;
+    font-size: 12px;
+    padding: 6px 4px;
+    margin: 0 auto;
+    float: none;
+  }
+  
+  .back a {
+    font-size: 85%;
+    padding: 8px 10px;
+    margin-left: 2px;
+  }
+  
+  nav a {
+    font-size: 85%;
+    padding: 6px 6px;
+    margin-left: 2px;
+  }
+}
+
 
 nav a:link, nav a:visited {
   background-color: #356b16;
