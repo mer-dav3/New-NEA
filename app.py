@@ -1,8 +1,8 @@
 #IMPORTS
 from flask import Flask, render_template, session, abort, redirect, url_for, request, flash, jsonify, send_from_directory
 import datetime
-# from flask_sqlalchemy import SQLAlchemy
-# import MySQLdb.cursors
+import matplotlib.pyplot as plt
+import numpy as np, pandas as pd
 import sqlite3
 # from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
@@ -250,21 +250,105 @@ def students():
     if 'user' in session:
         for t in teacher:
             role = t[5]
-
-        query = request.args.get('query')
-        if query:
-            cursor.execute("SELECT * FROM Students WHERE Firstname LIKE ? OR Surname LIKE ? OR Yeargroup LIKE ?", (f'%{query}%', f'%{query}%', f'%{query}%'))
-            students = cursor.fetchall()
-        else:
-            cursor.execute("SELECT * FROM Students")
-            students = cursor.fetchall()
         
-        return render_template("base_student.html", students=students, role=role)
+        # Get search query from GET parameter
+        query = request.args.get('query', '').strip()
+        
+        if role == "A":
+            if query:
+                # Search by ID, first name, surname, email, or mastery
+                search_param = f"%{query}%"
+                cursor.execute("""SELECT * FROM Students WHERE 
+                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
+                               OR Email LIKE ? OR Mastery LIKE ?""", 
+                               (search_param, search_param, search_param, search_param, search_param))
+            else:
+                cursor.execute("SELECT * FROM Students")
+            students = cursor.fetchall()
+            cursor.execute("SELECT * FROM Student_info")
+            extra_info = cursor.fetchall()
+            return render_template("admin_students.html", students=students, info=extra_info, query=query) 
+        else:
+            if query:
+                # Non-admin teachers see all students but can search
+                search_param = f"%{query}%"
+                cursor.execute("""SELECT * FROM Students WHERE 
+                               StudentID LIKE ? OR Firstname LIKE ? OR Surname LIKE ? 
+                               OR Email LIKE ? OR Mastery LIKE ?""", 
+                               (search_param, search_param, search_param, search_param, search_param))
+            else:
+                cursor.execute("SELECT * FROM Students")
+            students = cursor.fetchall()
+            cursor.execute("SELECT * FROM Student_Info")
+            extra_info = cursor.fetchall()
+            return render_template("students.html", students=students, info=extra_info, query=query)
     else:
         return redirect(url_for('login'))
-    
 
 
+@app.route('/view_student/<int:student_id>') # View Student route
+def view_student(student_id):
+    if 'user' in session:
+        connection = sqlite3.connect("schooldata.db")
+        cursor = connection.cursor()
+        
+        cursor.execute("SELECT * FROM Students WHERE StudentID=?", (student_id,))
+        student = cursor.fetchone()
+        
+        cursor.execute("SELECT * FROM Student_Info WHERE StudentID=?", (student_id,))
+        extra_info = cursor.fetchone()
+        
+        cursor.execute("SELECT * FROM Behaviour WHERE StudentID=?", (student_id,))
+        behaviours= cursor.fetchall()
+        weekly_behaviours = cursor.execute("SELECT * FROM Behaviour WHERE StudentID=? AND Date >= date('now', '-7 days')", (student_id,)).fetchall()
+        hp = 0
+        detentions= 0
+        demerits= 0
+        for i in behaviours:
+            if i[3] == "Housepoints":
+                hp += i[4]
+            elif i[3] == "Detention":
+                detentions += 1
+            elif i[3] == "Demerit":
+                demerits += 1
+
+        cursor.execute("SELECT * FROM Scores WHERE StudentID=?", (student_id,))
+        scores= cursor.fetchall()
+        
+        
+
+
+
+        connection.close()
+        
+        student_id_val = student[0]
+        first_name = student[1]
+        last_name = student[2]
+        dob = student[3]
+        gender = student[4]
+        mastery = student[5]
+        year = student[6]
+        email = student[7]
+        
+
+
+
+
+
+
+        return render_template("view_student.html", 
+                            first_name=first_name,
+                            last_name=last_name,
+                            dob=dob,
+                            gender=gender,
+                            mastery=mastery,
+                            year=year,
+                            email=email,
+                            student_id=student_id_val,
+                            extra_info=extra_info,
+                            page_title=f"{first_name} {last_name}")
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/add_student', methods=['GET', 'POST']) # Add Student route
@@ -702,14 +786,6 @@ def delete_post():
         
     return render_template("delete_post.html", myposts=myposts, teachers=teachers)
 
-
-
-@app.route('/analysis') # Analysis route
-def analysis():
-    if 'user' in session:
-        return render_template("analysis.html")
-    else:
-        return redirect(url_for('login'))
 
 
 

@@ -12,9 +12,9 @@
         
         <form method="POST" action="{{ url_for('delete_post') }}">
             <label for="post_id">Select Post to Delete:</label>
-            <select name="post_id" id="post_id" required>
+            <select name="post_id" id="post_id" required style="width: 10vw; height: 5vh; float:center" >
                 {% for post in myposts %}
-                    <option value="{{ post[0] }}">{{ post[1] }}</option>
+                    <option value="{{ post[0] }}" style="font-size: 2vh;" >{{ post[1] }}</option>
                 {% else %}
                     <option disabled>No posts available</option>
                 {% endfor %}

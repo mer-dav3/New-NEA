@@ -5,7 +5,9 @@
 {% endblock %}
 {% block body %}
     <section class="messages">
-        <a href="#" onclick="history.back()">Back</a>
+        <div class="back">
+            <a href="{{ url_for('dashboard') }}">Back</a>
+        </div>
         <h1>CHOOSE MESSAGE BOARD</h1>
 
 

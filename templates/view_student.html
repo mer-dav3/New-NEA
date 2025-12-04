@@ -1,0 +1,30 @@
+{% extends"base_page.html" %}
+{% block head %}
+    <title>Studsight - {{ page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_student.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="back">
+        <a href="#" onclick="history.back()">Back</a>
+    </div>
+    <section class="student-profile">
+        <img src="{{ url_for('static', filename='Profile.png') }}" alt="Profile Picture">
+        <h1>Name: {{ first_name }} {{ last_name }}</h1>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Gender:</strong> {{ gender }}</p>
+        <p><strong>Year:</strong> {{ year }} {{ yeargroup }}</p>
+        <p><strong>D.O.B:</strong>{{ dob }}</p>
+        <p><strong>Address:</strong> {{ address }}</p>
+        <p><strong>Guardian Contact:</strong> {{ guardian_contact }}</p>
+        
+
+
+    </section>
+{% endblock %}
+
+
+
+
+
+
+

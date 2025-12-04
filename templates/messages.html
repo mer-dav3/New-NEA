@@ -4,11 +4,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='messages.css') }}">
 {% endblock %}
 {% block body %}
-    <navigation>
-        <a href="#" onclick="history.back()">Back</a>
-        <a href="{{ url_for('new_post') }}">Create New Post</a>
+    <nav>
+        <a class="back" href="{{ url_for('message_page') }}">Back</a>
         <a href="{{ url_for('delete_post')}}">Delete Post</a>
-    </navigation>
+        <a href="{{ url_for('new_post') }}">Create New Post</a>
+        <br><br>
+    </nav>
 
     <section class="messages">
         <h1> GENERAL POSTS</h1>
@@ -28,7 +29,9 @@
                 </article>
             </a>
         {% else %}
-            <p>No posts available.</p>
+            <br><br>
+            <!-- <p style="text-align: center;">No posts available.</p> -->
+             <img class="no-posts-image" src="{{ url_for('static', filename='post.png') }}" alt="No Posts Available">
         {% endfor %}
     </section>
 {% endblock %}

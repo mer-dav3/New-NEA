@@ -29,7 +29,8 @@
                 </article>
             </a>
         {% else %}
-            <p>No posts available.</p>
+            <!-- <p>No posts available.</p> -->
+            <img class="no-posts-image" src="{{ url_for('static', filename='post.png') }}" alt="No Posts Available">
         {% endfor %}
     </section>
 {% endblock %}

@@ -16,3 +16,26 @@ a{
     text-decoration: none;
     color: #262525;
 }
+
+.back a{
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 8px;
+    font-size: 120%;
+    color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #41302f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  background-color: rgb(147, 136, 136);
+}

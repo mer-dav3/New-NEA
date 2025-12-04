@@ -33,7 +33,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS Attendance
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS Behaviour 
                (BehaviourID INTEGER PRIMARY KEY AUTOINCREMENT, StudentID INTEGER, 
-               Date DATE, Housepoints INTEGER, Sanctions TEXT, Action TEXT, 
+               Date DATE, Type TEXT, Value INTEGER, REASON TEXT, 
                FOREIGN KEY(StudentID) REFERENCES students(StudentID))''')
 
 
@@ -56,7 +56,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS Subjects
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS Scores 
                (ScoreID INTEGER PRIMARY KEY AUTOINCREMENT, StudentID INTEGER, SubjectID INTEGER, 
-               Score INTEGER, Assessment1 FLOAT, Assessment2 FLOAT, Assessment3 FLOAT, 
+               Mean_Score INTEGER, Assessment1 FLOAT, Assessment2 FLOAT, Assessment3 FLOAT, 
                FOREIGN KEY(StudentID) REFERENCES students(StudentID), 
                FOREIGN KEY(SubjectID) REFERENCES subjects(SubjectID))''')   
 
@@ -160,6 +160,20 @@ cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('Science')")
 cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('Computing')")
 cursor.execute("INSERT INTO Subjects (Subjectname) VALUES ('History')")
 
+cursor.execute("INSERT INTO Scores  (StudentID, SubjectID, Mean_Score, Assessment1, Assessment2, Assessment3) VALUES (1, 2, 85, 80.0, 87.5, 90.0)")
+cursor.execute("INSERT INTO Scores  (StudentID, SubjectID, Mean_Score, Assessment1, Assessment2, Assessment3) VALUES (1, 3, 78, 75.0, 80.0, 79.0)")
+cursor.execute("INSERT INTO Scores  (StudentID, SubjectID, Mean_Score, Assessment1, Assessment2, Assessment3) VALUES (1, 4, 92, 90.0, 93.0, 91.0)") 
+cursor.execute("INSERT INTO Scores  (StudentID, SubjectID, Mean_Score, Assessment1, Assessment2, Assessment3) VALUES (1, 5, 88, 85.0, 90.0, 89.0)")
+cursor.execute("INSERT INTO Scores  (StudentID, SubjectID, Mean_Score, Assessment1, Assessment2, Assessment3) VALUES (1, 6, 74, 70.0, 75.0, 77.0)")
+
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-24', 'Housepoints', 2, 'Good')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-24', 'Housepoints', 5, 'Good')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-25', 'Detention', 1, 'Late')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-26', 'Housepoints', 3, 'Good')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-27', 'Detention', 1, 'Talking')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-28', 'Demerit', 1, 'Bad')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-28', 'Housepoints', 4, 'Good')")
+cursor.execute("INSERT INTO Behaviour (StudentID, Date, Type, Value, REASON) VALUES (1, '2025-11-28', 'Demerit', 1, 'Bad')")
 
 
 connection.commit()

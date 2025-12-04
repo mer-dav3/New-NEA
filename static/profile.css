@@ -1,10 +1,62 @@
-.profile-info{
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 10px;
+section.profile-section {
+    background-color: #f9f9f9;
+    padding: 20px 20px 0 20px;
+    width: 60vw;
+    margin-top: 5vh;
+    margin-bottom: 0vh;
+    height: 90vh;
+    margin-left: 17vw;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+
+section.profile-section h1{
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+section.profile-section p{
+    font-size: 95%;
+    color: #000000;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    margin-top: 3vh;
+    margin-left: 14vw;
+    display: flex;
+}
+
+section.profile-section img{
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-bottom: 2vh;
+}
+
+
+.back a{
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 8px;
+    font-size: 120%;
+    color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #41302f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  background-color: rgb(147, 136, 136);
 }

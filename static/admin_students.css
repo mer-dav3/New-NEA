@@ -58,3 +58,88 @@ body{
     margin-left: 1%;
     margin-right: 1%;
 }
+
+.back a{
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 8px;
+  font-size: 120%;
+  color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #41302f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  background-color: rgb(147, 136, 136);
+}
+
+
+nav a{
+  text-align: center;
+  float: right;
+  text-decoration: none;
+  color: #262525;
+}
+
+nav a{
+  /* margin-top: 10px; */
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 8px;
+  font-size: 120%;
+  color: #030000;
+}
+
+
+nav a:link, nav a:visited {
+  background-color: #356b16;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+nav a:hover, nav a:active {
+  background-color: rgb(147, 136, 136);
+}
+
+nav a.red{
+  background-color: #742521;
+} 
+
+
+
+.student-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: #e7cacaa1;
+}
+
+
+
+td {
+  padding: 10px 0 0 0;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid rgb(0, 0, 0);
+  border-collapse: collapse;
+}
+
