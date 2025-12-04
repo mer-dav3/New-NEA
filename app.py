@@ -1,15 +1,15 @@
-#IMPORTS
-from flask import Flask, render_template, session, abort, redirect, url_for, request, flash, jsonify, send_from_directory
+        #IMPORTS
+from flask import Flask, render_template, session, abort, flash
+from flask import redirect, url_for, request, jsonify, send_from_directory
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np, pandas as pd
 import sqlite3
-# from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
 import random 
 
 
-app = Flask(__name__)
+app = Flask("Studsight")
 app.secret_key = 'StudsightSecretKey123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forum.db'
 # mysql = MySQL(app)
@@ -202,8 +202,10 @@ def dashboard():
             surname = t[2]
             gender = t[3]
             email = t[4]
-            
-        return render_template("dashboard.html", user=session['user'], firstname=firstname, surname=surname, gender=gender, email=email)
+        connection.close()
+        return render_template("dashboard.html", user=session['user'], 
+                               firstname=firstname, surname=surname, 
+                               gender=gender, email=email)
     else:
         flash('You must be logged in to view the dashboard.')
         return redirect(url_for('login'))
@@ -233,7 +235,13 @@ def profile():
             personal_email = info[2]
             dob = info[3]
             qualifications = info[4]
-        return render_template("profile.html", firstname=firstname, surname=surname, gender=gender, email=email, subjectname=subjectname, personal_email=personal_email, dob=dob, qualifications=qualifications)
+        connection.close()
+        return render_template("profile.html", firstname=firstname, 
+                               surname=surname, gender=gender, 
+                               email=email, subjectname=subjectname, 
+                               personal_email=personal_email, 
+                               dob=dob, qualifications=qualifications)
+                               
     else:
         return redirect(url_for('login'))   
 
@@ -267,6 +275,7 @@ def students():
             students = cursor.fetchall()
             cursor.execute("SELECT * FROM Student_info")
             extra_info = cursor.fetchall()
+            connection.close()
             return render_template("admin_students.html", students=students, info=extra_info, query=query) 
         else:
             if query:
@@ -281,8 +290,10 @@ def students():
             students = cursor.fetchall()
             cursor.execute("SELECT * FROM Student_Info")
             extra_info = cursor.fetchall()
+            connection.close()
             return render_template("students.html", students=students, info=extra_info, query=query)
     else:
+        connection.close()
         return redirect(url_for('login'))
 
 
@@ -314,10 +325,6 @@ def view_student(student_id):
 
         cursor.execute("SELECT * FROM Scores WHERE StudentID=?", (student_id,))
         scores= cursor.fetchall()
-        
-        
-
-
 
         connection.close()
         
@@ -329,12 +336,6 @@ def view_student(student_id):
         mastery = student[5]
         year = student[6]
         email = student[7]
-        
-
-
-
-
-
 
         return render_template("view_student.html", 
                             first_name=first_name,
@@ -378,7 +379,8 @@ def add_student():
 
             connection = sqlite3.connect("schooldata.db")
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO Students (Firstname, Surname, DOB, Gender, Mastery, Yeargroup, Email) VALUES (?, ?, ?, ?, ?, ?, ?)", (firstname, surname, dob, gender, mastery, yeargroup, email ))
+            cursor.execute("INSERT INTO Students (Firstname, Surname, DOB, Gender, Mastery, Yeargroup, Email) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                           (firstname, surname, dob, gender, mastery, yeargroup, email ))
             connection.commit()
             cursor.execute("SELECT StudentID FROM Students WHERE Firstname=? AND Surname=? AND DOB=?", (firstname, surname, dob))
             student = cursor.fetchone()
@@ -413,15 +415,6 @@ def delete_student():
         return redirect(url_for('login'))
 
 
-
-
-
-# @app.route('/messages') # Messages route
-# def messages():
-#     if 'user' in session:
-#         return render_template("messages.html")
-#     else:
-#         flash('You must be logged in to view messages.')
 
 
 @app.route('/message_page')

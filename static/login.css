@@ -1,6 +1,6 @@
 :root{
   --bg:#dedede;
-  --card:#ff4b22;
+  --card:#ec602d;
   --accent:#4a4a4a;
   --input-bg:#fff;
 }
@@ -67,11 +67,20 @@ input[type="password"]{
   margin-top:0.75rem;
   background:var(--accent);
   color:#fff;
+  font-weight: bold;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size:20px;
   border:none;
   border-radius:10px;
   cursor:pointer;
 }
+
+.btn:hover {
+  background: #3c3e4b;
+  transform: translateY(-3px) scale(1.01);
+}
+
+
 
 
 .flash {
